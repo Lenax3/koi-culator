@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: 
+    linear-gradient(
+        rgba(15, 20, 20, 0.25),
+        rgba(15, 20, 20, 0.35)
+    ),
+    url(../images/koibg.png);
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.calculator {
+    width: 380px;
+    padding: 32px;
+
+    border-radius: 32px;
+
+    background: rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px); /*add-on for safari or old browsers*/
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    box-shadow:
+    0 8px 32px rgba(255, 255, 255, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+#display {
+    min-height: 100px;
+    padding: 20px;
+
+    margin-bottom: 24px;
+    padding: 24px;
+
+    border-radius: 24px;
+
+    background: rgba(20, 30, 32, 0.45);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(255, 255, 255, 0.8);
+
+    color: #f3eee6;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    overflow: hidden;
+}
