@@ -2,47 +2,55 @@
 function add(a, b) {
     return a + b;
 }
+
 ///////////SUBTRACTION///////////
 function subtract(a, b) {
     return a - b;
 }
+
 ///////////MULTIPLICATION///////////
 function multiply(a, b) {
     return a * b;
 }
+
 ///////////DIVISION///////////
 function divide(a, b) {
-    if (b=== 0) {
+    if (b === 0) {
         return "Didn't u pay attention in maths?";
     }
+
     return a / b;
 }
+
 ///////////OPERATE///////////
 function operate(operator, a, b) {
-  a = Number(a);
-  b = Number(b);
+    a = Number(a);
+    b = Number(b);
 
-  let result;
+    let result;
 
-  if (operator === "+") result =  add(a, b);
-  if (operator === "-") result = subtract(a, b);
-  if (operator === "*") result = multiply(a, b);
-  if (operator === "/") result = divide(a, b);
+    if (operator === "+") result = add(a, b);
+    if (operator === "-") result = subtract(a, b);
+    if (operator === "*") result = multiply(a, b);
+    if (operator === "/") result = divide(a, b);
 
-  if (typeof result === "number") {
-    return Math.round(result * 1000) / 1000;
-  }
+    if (typeof result === "number") {
+        return Math.round(result * 1000) / 1000;
+    }
 
-  return result;
+    return result;
 }
+
 ///////////STATE (MIND)///////////
+let shouldClearCurrent = false;
 let firstNumber = "";
 let operator = "";
 let secondNumber = "";
 let shouldResetDisplay = false;
 
 ///////////DOM (DISPLAY)///////////
-const display = document.querySelector("#display");
+const previousOperand = document.querySelector(".previous-operand");
+const currentOperand = document.querySelector(".current-operand");
 
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -55,21 +63,25 @@ const backspaceButton = document.querySelector(".backspace");
 numberButtons.forEach(button => {
     button.addEventListener("click", () => {
 
-        //Result Reset Fix//
+        // Result Reset Fix
         if (shouldResetDisplay) {
             firstNumber = "";
             secondNumber = "";
             operator = "";
-            display.textContent = "";
+
+            previousOperand.textContent = "";
+            currentOperand.textContent = "";
+
             shouldResetDisplay = false;
         }
-        //Number Input Logic//
+
+        // Number Input Logic
         if (operator === "") {
             firstNumber += button.textContent;
-            display.textContent = firstNumber;
+            currentOperand.textContent = firstNumber;
         } else {
             secondNumber += button.textContent;
-            display.textContent = secondNumber
+            currentOperand.textContent = secondNumber;
         }
     });
 });
@@ -84,11 +96,16 @@ operatorButtons.forEach(button => {
 
         if (firstNumber !== "" && secondNumber !== "") {
             firstNumber = operate(operator, firstNumber, secondNumber);
-            display.textContent = firstNumber;
+
+            currentOperand.textContent = firstNumber;
+
             secondNumber = "";
         }
 
         operator = button.textContent;
+
+        previousOperand.textContent = `${firstNumber} ${operator}`;
+        
     });
 });
 
@@ -101,7 +118,10 @@ equalsButton.addEventListener("click", () => {
 
     const result = operate(operator, firstNumber, secondNumber);
 
-    display.textContent = result;
+    previousOperand.textContent =
+        `${firstNumber} ${operator} ${secondNumber} =`;
+
+    currentOperand.textContent = result;
 
     firstNumber = result;
     operator = "";
@@ -112,62 +132,85 @@ equalsButton.addEventListener("click", () => {
 
 ///////////EVENTLISTENER CLEAR///////////
 clearButton.addEventListener("click", () => {
+
     firstNumber = "";
     secondNumber = "";
     operator = "";
     shouldResetDisplay = false;
-    display.textContent = "0";
+
+    previousOperand.textContent = "";
+    currentOperand.textContent = "0";
 });
 
 ///////////EVENTLISTENER DECIMAL///////////
 decimalButton.addEventListener("click", () => {
 
-    //clears display
+    // Clears display
     if (shouldResetDisplay) {
         firstNumber = "";
         secondNumber = "";
         operator = "";
-        display.textContent = "";
+
+        previousOperand.textContent = "";
+        currentOperand.textContent = "";
+
         shouldResetDisplay = false;
     }
 
-    //prevents user from entering multiple "decimal dots" 
+    // Prevent multiple decimal dots
     if (operator === "") {
-        if (firstNumber.includes (".")) return;
+
+        if (firstNumber.includes(".")) return;
+
         if (firstNumber === "") firstNumber = "0";
 
         firstNumber += ".";
-        display.textContent = firstNumber;
+
+        currentOperand.textContent = firstNumber;
+
     } else {
-        if (secondNumber.includes (".")) return;
+
+        if (secondNumber.includes(".")) return;
+
         if (secondNumber === "") secondNumber = "0";
 
         secondNumber += ".";
-        display.textContent = secondNumber;
+
+        currentOperand.textContent = secondNumber;
     }
 });
 
 ///////////EVENTLISTENER BACKSPACE///////////
-backspaceButton.addEventListener("click", () =>{
+backspaceButton.addEventListener("click", () => {
 
-    //reset after result
+    // Reset after result
     if (shouldResetDisplay) {
+
         firstNumber = "";
         secondNumber = "";
         operator = "";
+
         shouldResetDisplay = false;
-        display.textContent = firstNumber || "0";
+
+        previousOperand.textContent = "";
+        currentOperand.textContent = "0";
+
         return;
     }
 
-    //first number
+    // First number
     if (operator === "") {
+
         firstNumber = firstNumber.slice(0, -1);
-        display.textContent = firstNumber || "0";
+
+        currentOperand.textContent = firstNumber || "0";
     }
-    //second number
+
+    // Second number
     else {
+
         secondNumber = secondNumber.slice(0, -1);
-        display.textContent = secondNumber || "0";
+
+        currentOperand.textContent = secondNumber || "0";
     }
 });
