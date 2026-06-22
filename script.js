@@ -89,9 +89,7 @@ numberButtons.forEach(button => {
 operatorButtons.forEach(button => {
     button.addEventListener("click", () => {
 
-        if (firstNumber === "") {
-            return;
-        }
+        if (firstNumber === "") return;
 
         if (firstNumber !== "" && secondNumber !== "") {
             firstNumber = operate(operator, firstNumber, secondNumber);
@@ -197,9 +195,7 @@ backspaceButton.addEventListener("click", () => {
         firstNumber = firstNumber.slice(0, -1);
 
         currentOperand.textContent = firstNumber || "0";
-    }
-
-    else {
+    } else {
 
         secondNumber = secondNumber.slice(0, -1);
 
@@ -212,16 +208,15 @@ percentButton.addEventListener("click", () => {
 
     if (shouldResetDisplay) return;
 
-    if (operator === "") {
+    if (firstNumber === "") return;
 
-        if (firstNumber === "") return;
+    if (operator === "") {
 
         firstNumber = String(
             Math.round((Number(firstNumber) / 100) * 1000) / 1000
         );
 
         currentOperand.textContent = firstNumber;
-
         return;
     }
 
